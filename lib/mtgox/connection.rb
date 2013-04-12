@@ -26,5 +26,23 @@ module MtGox
         connection.adapter(Faraday.default_adapter)
       end
     end
+
+    def data_connection
+      options = {
+        headers:  {
+          accept: 'application/json',
+          user_agent: "mtgox gem #{MtGox::Version}",
+        },
+        url: 'https://data.mtgox.com',
+      }
+
+      Faraday.new(options) do |connection|
+        connection.request :url_encoded
+        connection.use Faraday::Response::RaiseError
+        connection.use MtGox::Response::ParseJson
+        connection.use Faraday::Response::RaiseMtGoxError
+        connection.adapter(Faraday.default_adapter)
+      end
+    end
   end
 end
