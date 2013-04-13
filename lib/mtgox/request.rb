@@ -13,7 +13,7 @@ module MtGox
     private
 
     def request(method, path, options)
-      c = data_connection if path =~ /ticker\.php$/ or path =~ /getDepth\.php/
+      c = data_connection if path =~ /ticker\.php$/ or path =~ /getDepth\.php$/
       c = connection unless c
       response = c.send(method) do |request|
         case method
