@@ -10,13 +10,7 @@ module MtGox
     private
 
     def connection
-      options = {
-        headers:  {
-          accept: 'application/json',
-          user_agent: "mtgox gem #{MtGox::Version}",
-        },
-        url: 'https://mtgox.com',
-      }
+      options = default_connection_options
 
       Faraday.new(options) do |connection|
         connection.request :url_encoded
@@ -28,13 +22,8 @@ module MtGox
     end
 
     def data_connection
-      options = {
-        headers:  {
-          accept: 'application/json',
-          user_agent: "mtgox gem #{MtGox::Version}",
-        },
-        url: 'https://data.mtgox.com',
-      }
+      options = default_connection_options
+      options[:url] = 'https://data.mtgox.com'
 
       Faraday.new(options) do |connection|
         connection.request :url_encoded
@@ -43,6 +32,18 @@ module MtGox
         connection.use Faraday::Response::RaiseMtGoxError
         connection.adapter(Faraday.default_adapter)
       end
+    end
+
+    private
+    def default_connection_options
+      {
+        headers:  {
+          accept: 'application/json',
+          user_agent: "mtgox gem #{MtGox::Version}",
+        },
+        url: 'https://mtgox.com',
+        ssl: => {verify: false}
+      }
     end
   end
 end
