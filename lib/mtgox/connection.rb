@@ -42,7 +42,7 @@ module MtGox
           user_agent: "mtgox gem #{MtGox::Version}",
         },
         url: 'https://mtgox.com',
-        ssl: => {verify: false}
+        ssl: {verify: false}
       }
     end
   end
